@@ -15,7 +15,7 @@ const DataController = require("./Client/services/controllers/DataController.cjs
 
 // Configuração do middleware cors
 const corsOptions = {
-	origin: "http://localhost:3000", // Troque para a URL do seu aplicativo React em produção
+	origin: "https://meu-barber-vite-api-2.onrender.com", // Troque para a URL do seu aplicativo React em produção
 	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 	credentials: true,
 	optionsSuccessStatus: 204
