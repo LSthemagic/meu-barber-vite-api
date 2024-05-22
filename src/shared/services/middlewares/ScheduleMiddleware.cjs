@@ -3,7 +3,7 @@ const barberModel = require("../../../Barbershop/services/models/Barber.cjs");
 module.exports = async (req, res, next) => {
   try {
     const { clients, date, email } = req.body;
-
+    console.log(req.body)
     const barber = await barberModel.findOne({ "barbers.email": email });
 
     if (!barber) {
@@ -12,7 +12,6 @@ module.exports = async (req, res, next) => {
         message: "Barbeiro não encontrado"
       });
     }
-
 
     let startDate;
     let endDate;
@@ -36,8 +35,9 @@ module.exports = async (req, res, next) => {
       });
     }
 
-    const barberPath = `barbers[${barberIndex}].unavailableDate`;
+    const barberPath = `barbers.${barberIndex}.unavailableDate`;
 
+    
     const conflictsUnavailableDate = await barberModel.findOne({
       [barberPath]: {
         $elemMatch: {
@@ -47,18 +47,13 @@ module.exports = async (req, res, next) => {
       }
     });
 
-
     if (conflictsUnavailableDate) {
-
       return res.status(400).json({
         error: true,
         message: "O horário selecionado não está disponível.",
-        conflicts: {
-          conflictsUnavailableDate
-        }
+        conflicts: conflictsUnavailableDate
       });
     }
-
   } catch (e) {
     console.log(e);
     return res.status(500).json({
