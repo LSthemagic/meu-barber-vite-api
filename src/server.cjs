@@ -15,7 +15,7 @@ const DataController = require("./Client/services/controllers/DataController.cjs
 
 // Configuração do middleware cors
 const corsOptions = {
-	origin: "https://meu-barber-vite.vercel.app", // Troque para a URL do seu aplicativo React em produção
+	origin: ["https://meu-barber-vite.vercel.app", "http://localhost:3000"], // Troque para a URL do seu aplicativo React em produção
 	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 	credentials: true,
 	optionsSuccessStatus: 204
