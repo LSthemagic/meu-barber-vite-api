@@ -19,20 +19,51 @@ const generateToken = (user = {}) => {
 		}
 	);
 };
+
 router.post("/uploadImage", upload.single("file"), async (req, res) => {
-	try {
-		const { file } = req;
-		if (!file) {
-			return res.status(400).json({
-				message: "No image provided"
-			});
-		}
-	} catch (err) {
-		res.status(500).json({
-			error: "Error in the server"
-		});
-	}
+    try {
+        const { name, id } = req.body;
+        const file = req.file;
+
+        if (!file) {
+            return res.status(400).json({
+                error: true,
+                message: "Nenhuma imagem fornecida"
+            });
+        }
+
+        const barbershop = await BarberModel.findById(id);
+
+        if (!barbershop) {
+            return res.status(400).json({
+                error: true,
+                message: "Barbearia não encontrada. Por favor, tente novamente mais tarde."
+            });
+        }
+
+        // Ensure barbershop.picture is defined and is an array
+        if (!Array.isArray(barbershop.picture)) {
+            barbershop.picture = [];
+        }
+
+        // Save the file path and name in the barbershop document
+        barbershop.picture.push({ name, src: file.filename });
+        await barbershop.save();
+
+        return res.json({
+            error: false,
+            message: "Imagem salva com sucesso."
+        });
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            error: true,
+            message: "Erro no servidor"
+        });
+    }
 });
+
 
 router.post("/registerBarber", async (req, res) => {
 	try {
@@ -161,7 +192,7 @@ router.post("/saveService", async (req, res) => {
 			})
 		}
 
-		barbershop.services.push({nameService, price, duration})
+		barbershop.services.push({ nameService, price, duration })
 		await barbershop.save()
 		return res.json({
 			error: false,

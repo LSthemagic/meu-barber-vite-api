@@ -79,7 +79,7 @@ const sendEmail = async (email, codingRandom) => {
         </body>
       </html>`
 		})
-		.then((resp) => console.log(resp))
+		// .then((resp) => console.log(resp))
 		.catch((err) => console.log("erro ao enviar email ", err));
 };
 

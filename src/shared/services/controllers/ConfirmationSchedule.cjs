@@ -84,10 +84,6 @@ router.post("/confirmationSchedule", async (req, res) => {
     }catch(err){
       console.log("erro ao formatar horário",err)
     }
-
-    
-
-
     return res.json({
       error: false,
       message: "Horário agendado!"

@@ -15,6 +15,17 @@ const ServicesSchema = new mongoose.Schema({
 	}
 })
 
+const PictureSchema = new mongoose.Schema({
+	name: {
+		type: String,
+		required: true
+	},
+	src: {
+		type: String,
+		required: true
+	}
+})
+
 const ClienteSchema = new mongoose.Schema({
 	name: {
 		type: String,
@@ -34,7 +45,8 @@ const ClienteSchema = new mongoose.Schema({
 	},
 	service_id: {
 		type: String,
-	}
+	},
+
 });
 
 const UnavailableDateSchema = new mongoose.Schema({
@@ -92,6 +104,10 @@ const EstablishmentSchema = new mongoose.Schema({
 	password: {
 		type: String,
 		select: false
+	},
+	picture: {
+		type: [PictureSchema],
+		default: []
 	},
 	barbers: {
 		type: [BarberSchema],
