@@ -5,7 +5,7 @@ const upload = require("../../../Barbershop/services/middlewares/Storage.cjs")
 const fs = require("fs")
 const getImages = async (Model, req, res) => {
     try {
-        const { ID } = req.body;
+        const { ID } = req.headers;
         const barbershop = await Model.findById(ID)
         if (!barbershop) {
             return res.status(404).json({
