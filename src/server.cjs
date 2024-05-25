@@ -1,4 +1,3 @@
-
 const express = require("express");
 const cors = require("cors"); // Importe o middleware cors
 const app = express();
@@ -8,7 +7,7 @@ const AuthController = require("./Client/services/controllers/AuthController.cjs
 const authenticateMiddleware = require("./Client/services/middlewares/authenticate.cjs");
 const BarberAuthController = require("./Barbershop/services/controllers/BarberAuthController.cjs");
 const VerifyEmail = require("./shared/services/controllers/VerifyEmail.cjs");
-const GetImages = require("./shared/services/controllers/GetImages.cjs");
+const ImagesController = require("./shared/services/controllers/ImagesController.cjs");
 const DataBarberController = require("./Barbershop/services/controllers/DataBarberController.cjs");
 const ConfirmationSchedule = require("./shared/services/controllers/ConfirmationSchedule.cjs")
 const scheduleMiddleware = require("./shared/services/middlewares/ScheduleMiddleware.cjs")
@@ -37,7 +36,8 @@ app.use("/dataBarber", DataBarberController);
 app.use("/confirmationFromEmail", ConfirmationSchedule)
 app.use("/calendar", scheduleMiddleware, ScheduleController);
 app.use("/authToken", authenticateMiddleware)
-app.use("/getPicture", express.static(path.join(__dirname, './uploads')))
+app.use("/picture", express.static(path.join(__dirname, './uploads')))
+app.use("/imageController", ImagesController)
 app.listen(port, () => {
 	console.log("Servidor rodando na porta 3001");
 });

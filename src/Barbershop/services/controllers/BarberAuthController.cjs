@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const upload = require("../middlewares/Storage.cjs");
 const router = express.Router();
+const fs = require("fs")
 // const nodemailer = require('nodemailer')
 
 const generateToken = (user = {}) => {
@@ -21,47 +22,49 @@ const generateToken = (user = {}) => {
 };
 
 router.post("/uploadImage", upload.single("file"), async (req, res) => {
-    try {
-        const { name, id } = req.body;
-        const file = req.file;
+	try {
+		const { name, id } = req.body;
+		const file = req.file;
 
-        if (!file) {
-            return res.status(400).json({
-                error: true,
-                message: "Nenhuma imagem fornecida"
-            });
-        }
+		if (!file) {
+			return res.status(400).json({
+				error: true,
+				message: "Nenhuma imagem fornecida"
+			});
+		}
 
-        const barbershop = await BarberModel.findById(id);
+		const barbershop = await BarberModel.findById(id);
+		if (!barbershop) {
 
-        if (!barbershop) {
-            return res.status(400).json({
-                error: true,
-                message: "Barbearia não encontrada. Por favor, tente novamente mais tarde."
-            });
-        }
+			return res.status(400).json({
+				error: true,
+				message: "Barbearia não encontrada. Por favor, tente novamente mais tarde."
+			});
+		}
+		// Ensure barbershop.picture is defined and is an array
+		if (!Array.isArray(barbershop.picture)) {
+			barbershop.picture = [];
+		} else {
+			barbershop.picture.splice(0, 1);
+		}
 
-        // Ensure barbershop.picture is defined and is an array
-        if (!Array.isArray(barbershop.picture)) {
-            barbershop.picture = [];
-        }
 
-        // Save the file path and name in the barbershop document
-        barbershop.picture.push({ name, src: file.filename });
-        await barbershop.save();
+		// Save the file path and name in the barbershop document
+		barbershop.picture.push({ name, src: file.filename });
+		await barbershop.save();
 
-        return res.json({
-            error: false,
-            message: "Imagem salva com sucesso."
-        });
+		return res.json({
+			error: false,
+			message: "Imagem salva com sucesso."
+		});
 
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({
-            error: true,
-            message: "Erro no servidor"
-        });
-    }
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({
+			error: true,
+			message: "Erro no servidor"
+		});
+	}
 });
 
 
