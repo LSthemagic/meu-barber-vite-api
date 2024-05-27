@@ -121,9 +121,9 @@ router.post("/update-clients", async (req, res) => {
 
 
 router.post("/unavailableTime", async (req, res) => {
-    const { email, date, type, name } = req.body;
+    const { email, start, end, type, name } = req.body;
     try {
-
+        console.log(req.body)
         const barber = await BarberModel.findOne({ "barbers.email": email });
 
         if (!barber) {
@@ -137,8 +137,8 @@ router.post("/unavailableTime", async (req, res) => {
         // Create a new unavailable date object based on the schema
         const newUnavailableDate = {
             email: email,
-            startDate: date.start,
-            endDate: date.end,
+            startDate: start,
+            endDate: end,
             type: type,
             name: name
         };

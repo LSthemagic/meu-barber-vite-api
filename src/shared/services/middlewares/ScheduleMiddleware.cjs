@@ -2,7 +2,7 @@ const barberModel = require("../../../Barbershop/services/models/Barber.cjs");
 
 module.exports = async (req, res, next) => {
   try {
-    const { clients, date, email } = req.body;
+    const { clients, start, end, email } = req.body;
     console.log(req.body)
     const barber = await barberModel.findOne({ "barbers.email": email });
 
@@ -20,8 +20,8 @@ module.exports = async (req, res, next) => {
       startDate = new Date(clients.startDate);
       endDate = new Date(clients.endDate);
     } else {
-      startDate = new Date(date.start);
-      endDate = new Date(date.end);
+      startDate = new Date(start);
+      endDate = new Date(end);
     }
 
     const barberIndex = barber.barbers.findIndex(
