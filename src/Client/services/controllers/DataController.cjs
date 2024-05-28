@@ -8,11 +8,11 @@ router.get("/getFav", async (req, res) => {
 		const user = await UserModel.findOne({ email });
 
 		if (user) {
-			const IDs =  user.babershopFavorites.map((item)=> item.toString())
+			const IDs = user.babershopFavorites.map((item) => item.toString())
 			return res.json({ IDs });
 		}
 
-		
+
 	} catch (error) {
 		console.error("Erro ao buscar horários marcados", error); // Use 'error' em vez de 'err' aqui
 		return res.status(500).json({
@@ -21,5 +21,28 @@ router.get("/getFav", async (req, res) => {
 		});
 	}
 })
+
+router.get("/getUser", async (req, res) => {
+	try {
+		const { id } = req.body;
+		const user = await UserModel.findById(id);
+		if (!user) {
+			return res.status(404).json({
+				error: true,
+				message: "Usuário não encontrado"
+			});
+		}
+		return res.json(user);
+	} catch (e) {
+		console.log("error in getUser", e)
+		return res.status(400).json({
+			error: true,
+			message: "ERRO INTERNO NO SERVIDOR"
+		})
+	}
+})
+
+
+
 
 module.exports = router;

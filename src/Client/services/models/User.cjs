@@ -28,10 +28,24 @@ const UserSchema = new mongoose.Schema({
 	]
 });
 
-UserSchema.pre("save", async function (next) {
-	const hash = await bcrypt.hash(this.password, 10);
-	this.password = hash;
+UserSchema.pre('save', async function (next) {
+	const user = this;
+	if (user.isModified('password') || user.isNew) {
+		try {
+			if (!user.password) {
+				throw new Error('Password is required');
+			}
+			const hash = await bcrypt.hash(this.password, 10);
+			this.password = hash;
+			next();
+		} catch (error) {
+			next(error);
+		}
+	} else {
+		next();
+	}
 });
+
 
 const User = mongoose.model("Clients", UserSchema);
 module.exports = User;

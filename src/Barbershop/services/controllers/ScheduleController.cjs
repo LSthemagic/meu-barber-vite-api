@@ -118,8 +118,6 @@ router.post("/update-clients", async (req, res) => {
     }
 });
 
-
-
 router.post("/unavailableTime", async (req, res) => {
     const { email, start, end, type, name } = req.body;
     try {

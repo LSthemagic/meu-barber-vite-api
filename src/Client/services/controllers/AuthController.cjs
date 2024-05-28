@@ -2,6 +2,7 @@ const express = require("express");
 const UserModel = require("../models/User.cjs");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const PasswordMiddleware  = require("../../../shared/services/middlewares/PasswordMiddleware.cjs");
 const router = express.Router();
 require("dotenv").config();
 
@@ -93,6 +94,7 @@ router.post("/userBarbershopFav", async (req, res) => {
 		res.status(500).json({ error: true, message: "Internal server error" });
 	}
 });
+
 
 module.exports = router;
 

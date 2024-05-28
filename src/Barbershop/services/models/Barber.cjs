@@ -133,12 +133,22 @@ const EstablishmentSchema = new mongoose.Schema({
 	}
 });
 
-EstablishmentSchema.pre("save", async function (next) {
-	if (this.password) {
-		const hash = await bcrypt.hash(this.password, 10);
-		this.password = hash;
+EstablishmentSchema.pre('save', async function (next) {
+	const user = this;
+	if (user.isModified('password') || user.isNew) {
+		try {
+			if (!user.password) {
+				throw new Error('Password is required');
+			}
+			const hash = await bcrypt.hash(this.password, 10);
+			this.password = hash;
+			next();
+		} catch (error) {
+			next(error);
+		}
+	} else {
+		next();
 	}
-	next();
 });
 
 const Barber = mongoose.model("Barbershop", EstablishmentSchema);
