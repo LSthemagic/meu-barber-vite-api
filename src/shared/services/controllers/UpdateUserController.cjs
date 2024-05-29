@@ -50,7 +50,7 @@ const putProfile = async (req, res, Model) => {
 
 const putPassword = async (req, res, Model) => {
 	try {
-		const { password, id } = req.body;
+		const { password_confirmation, id } = req.body;
 		const user = await Model.findById(id);
 		if (!user) {
 			return res.status(401).json({
@@ -58,7 +58,7 @@ const putPassword = async (req, res, Model) => {
 				message: "Usuário não encontrado."
 			});
 		}
-		user.password = password;
+		user.password = password_confirmation;
 		await user.save();
 		res.status(200).json({
 			error: false,

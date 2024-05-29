@@ -24,8 +24,8 @@ router.get("/barbers", async (req, res) => {
 });
 
 router.get("/profileBarber", async (req, res) => {
-	const { email } = req.headers;
-	const barber = await BarberModel.findOne({ email })
+	const { id } = req.headers;
+	const barber = await BarberModel.findById(id)
 	try {
 
 		if (!barber) {

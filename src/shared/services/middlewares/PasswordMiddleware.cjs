@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 // Middleware de atualizar senha
 const updatePassword = (Model) => {
     return async (req, res, next) => {
-        const { id, password } = req.body;
+        const { id, password, password_confirmation } = req.body;
         try {
             const user = await Model.findById(id).select("+password");
             if (!user) {
@@ -11,7 +11,15 @@ const updatePassword = (Model) => {
                     message: "Usuário inexistente."
                 });
             }
-            if (await bcrypt.compare(password, user.password)) {
+
+            if (!await bcrypt.compare(password, user.password)) {
+                return res.status(400).json({
+                    error: true,
+                    message: "A senha está incorreta."
+                });
+            }
+
+            if (await bcrypt.compare(password_confirmation, user.password)) {
                 return res.status(400).json({
                     error: true,
                     message: "A senha precisa ser diferente da anterior."
@@ -19,7 +27,7 @@ const updatePassword = (Model) => {
             }
             // Verificar se a senha tem letra maiúscula, minúscula, caractere especial e número
             const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-            if (!regex.test(password)) {
+            if (!regex.test(password_confirmation)) {
                 return res.status(400).json({
                     error: true,
                     message: "A senha deve conter no mínimo 8 caracteres, uma letra maiúscula, uma minúscula e um caractere especial."
