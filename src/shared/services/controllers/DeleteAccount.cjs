@@ -4,7 +4,7 @@ const UserModel = require('../../../Client/services/models/User.cjs');
 const BarbershopModel = require('../../../Barbershop/services/models/Barber.cjs');
 
 const delUser = async (req, res, Model) => {
-    const { id } = req.body;
+    const { id } = req.headers;
     try {
         const client = await Model.findByIdAndDelete(id);
         if (!client) {

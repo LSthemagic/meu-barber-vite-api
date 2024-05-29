@@ -24,7 +24,8 @@ router.get("/getFav", async (req, res) => {
 
 router.get("/getUser", async (req, res) => {
 	try {
-		const { id } = req.body;
+		const { id } = req.headers;
+		console.log(id)
 		const user = await UserModel.findById(id);
 		if (!user) {
 			return res.status(404).json({
@@ -41,8 +42,6 @@ router.get("/getUser", async (req, res) => {
 		})
 	}
 })
-
-
 
 
 module.exports = router;
