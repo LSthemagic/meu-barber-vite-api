@@ -3,7 +3,8 @@ const BarbershopModel = require("../models/Barber.cjs");
 const router = express.Router();
 
 const handleDelete = async (req, res, model, itemType) => {
-    const { id, item_id } = req.body;
+    const { id, item_id } = req.headers;
+
     try {
         const document = await model.findById(id);
         if (!document) {
