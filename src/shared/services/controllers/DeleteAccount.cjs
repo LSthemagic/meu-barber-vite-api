@@ -10,12 +10,12 @@ const delUser = async (req, res, Model) => {
         if (!client) {
             return res.status(404).json({
                 error: true,
-                message: "Client not found"
+                message: "Conta inexistente registro dados."
             });
         }
         return res.status(200).json({
             error: false,
-            message: "Client deleted successfully"
+            message: "Conta deletada com sucesso."
         });
     } catch (error) {
         console.error(error);
