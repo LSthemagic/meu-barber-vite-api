@@ -8,8 +8,8 @@ module.exports = (req, res, next) => {
 			message: "Token no provided."
 		});
 	}
-	// formato de token jwt
-	//Bearer tokenaqui
+	// formato de token jwt 
+	//Bearer token
 	const parts = authHeader.split(" ");
 	if (parts.length !== 2) {
 		return res.status(401).json({
@@ -18,15 +18,16 @@ module.exports = (req, res, next) => {
 		});
 	}
 	const [scheme, token] = parts;
-	if (scheme.indexOf("Bearer") !== 0) {
+	if ((scheme.indexOf("Bearer") !== 0) == true) {
 		return res.status(401).json({
 			error: true,
-			message: "Token malformatted."
+			message: "Token malformed."
 		});
 	}
+
 	return jwt.verify(token, process.env.REACT_APP_SECRET, (err, decoded) => {
 		if (err) {
-			console.log("Error em verify authenticate middleware user => \n", err);
+			console.log("Error em verify authenticate middleware user => \n", err.message);
 			return res.status(401).json({
 				error: true,
 				message: "Token invalid or expired."

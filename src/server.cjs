@@ -4,7 +4,7 @@ const app = express();
 const path = require("path");
 const AdminController = require("./Client/services/controllers/AdminController.cjs");
 const AuthController = require("./Client/services/controllers/AuthController.cjs");
-const authenticateMiddleware = require("./Client/services/middlewares/authenticate.cjs");
+const authenticateMiddleware = require("./shared/services/middlewares/authenticate.cjs");
 const BarberAuthController = require("./Barbershop/services/controllers/BarberAuthController.cjs");
 const VerifyEmail = require("./shared/services/controllers/VerifyEmail.cjs");
 const ImagesController = require("./shared/services/controllers/ImagesController.cjs");
@@ -16,7 +16,8 @@ const DataController = require("./Client/services/controllers/DataController.cjs
 const UpdateUserController = require("./shared/services/controllers/UpdateUserController.cjs")
 const UpdateController = require("./Barbershop/services/controllers/UpdateController.cjs")
 const DeleteController = require("./Barbershop/services/controllers/DeleteController.cjs")
-const DeleteAccount = require("./shared/services/controllers/DeleteAccount.cjs")
+const DeleteAccount = require("./shared/services/controllers/DeleteAccount.cjs");
+
 // Configuração do middleware cors
 const corsOptions = {
 	origin: ["https://meu-barber-vite.vercel.app", "http://localhost:3000"], // Troque para a URL do seu aplicativo React em produção
@@ -32,7 +33,7 @@ app.use(express.json());
 // #########  client routes ##########
 app.use("/admin", authenticateMiddleware, AdminController);
 app.use("/auth", AuthController);
-app.use("/dataUser", DataController)
+app.use("/dataUser", authenticateMiddleware, DataController)
 // ######################################
 
 // #########  shared routes ##########
@@ -45,7 +46,7 @@ app.use("/deleteAccount", DeleteAccount)
 
 // #########  barbershop routes ########## 
 app.use("/barberAuth", BarberAuthController);
-app.use("/dataBarber", DataBarberController);
+app.use("/dataBarber", authenticateMiddleware, DataBarberController);
 app.use("/updateDependenciesBarbershop", UpdateController);
 app.use("/deleteDependenciesBarbershop", DeleteController);
 app.use("/authToken", authenticateMiddleware);
