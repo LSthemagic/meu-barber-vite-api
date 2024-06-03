@@ -66,6 +66,9 @@ const UnavailableDateSchema = new mongoose.Schema({
 	},
 	name: {
 		type: String
+	},
+	service_id: {
+		type: String,
 	}
 });
 

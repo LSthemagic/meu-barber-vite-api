@@ -148,5 +148,26 @@ router.get("/barbersPerBarbershop", async (req, res) => {
 	}
 });
 
+router.get("/services", async (req, res) => {
+	try {
+		const { service_id, _id } = req.headers;
+		const barbershop = await BarberModel.findById(_id)
+		if (!barbershop) {
+			return res.status(401).json({
+				error: true,
+				message: "Barbearia não foi encontrada. Faça login novamente."
+			})
+		}
+		const service = barbershop.services.filter((item) => item._id == service_id)
+
+		return res.json(service)
+	} catch (e) {
+		console.log(e.message)
+		return res.status(500).json({
+			error: true,
+			message: "Erro interno no servidor. Tente novamente mais tarde!"
+		})
+	}
+})
 
 module.exports = router;

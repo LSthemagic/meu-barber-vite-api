@@ -49,7 +49,6 @@ app.use("/barberAuth", BarberAuthController);
 app.use("/dataBarber", authenticateMiddleware, DataBarberController);
 app.use("/updateDependenciesBarbershop", UpdateController);
 app.use("/deleteDependenciesBarbershop", DeleteController);
-app.use("/authToken", authenticateMiddleware);
 app.use("/calendar", scheduleMiddleware, ScheduleController);
 
 // ############################################

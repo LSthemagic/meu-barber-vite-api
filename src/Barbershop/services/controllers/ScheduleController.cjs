@@ -7,7 +7,6 @@ router.post("/update-clients", async (req, res) => {
         const { email, clients: clientsFront, type, } = req.body;
 
         const barber = await BarberModel.findOne({ "barbers.email": email });
-
         const service = await BarberModel.findOne({ "services._id": clientsFront.service_id })
 
 
@@ -48,7 +47,8 @@ router.post("/update-clients", async (req, res) => {
                 startDate: clientsFront.startDate,
                 endDate: clientsFront.endDate,
                 type: type,
-                name: clientsFront.name
+                name: clientsFront.name,
+                service_id: clientsFront.service_id
             };
         } else {
             // Add new unavailable date
@@ -57,13 +57,14 @@ router.post("/update-clients", async (req, res) => {
                 startDate: clientsFront.startDate,
                 endDate: clientsFront.endDate,
                 type: type,
-                name: clientsFront.name
+                name: clientsFront.name,
+                service_id: clientsFront.service_id
             });
         }
 
         if (existingClientIndex !== -1) {
             // Update existing client
-            barber.barbers[barberIndex].clients[existingClientIndex] = clientsFront;
+            barber.barbers[barberIndex].clients[existingClientIndex].push(clientsFront);
 
         } else {
             const allBarbershops = await BarberModel.findOne({ "barbers.clients.email": clientsFront.email })
